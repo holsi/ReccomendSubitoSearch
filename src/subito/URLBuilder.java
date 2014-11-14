@@ -43,6 +43,7 @@ public class URLBuilder {
 		System.out.println(builder.buildURL(query, region, null, null));
 		System.out.println(builder.buildURL(query, region, null, notProvince));
 		System.out.println(builder.buildURL(query, region, category,null));
+	    System.out.println("CIAO");
 	}
 	
 }
