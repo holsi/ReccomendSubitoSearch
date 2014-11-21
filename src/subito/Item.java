@@ -6,14 +6,16 @@ public class Item {
 	private String description;
 	private String image;
 	private Double price;
+	private String link;
 	
 	
-	public Item(String title, String description, String image, Double price) {
+	public Item(String title, String description, String image, Double price, String link) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.image = image;
 		this.price = price;
+		this.link = link;
 	}
 	
 	public String getTitle() {
@@ -47,12 +49,25 @@ public class Item {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	
+	
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
 
 	@Override
 	public String toString() {
 		return "Item [title=" + title + ", description=" + description
-				+ ", image=" + image + ", price=" + price + "]";
+				+ ", image=" + image + ", price=" + price + ", link=" + link
+				+ "]";
 	}
+
+	
 	
 	
 	

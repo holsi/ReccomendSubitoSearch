@@ -9,7 +9,7 @@ public class URLBuilder {
 			  isProvince = false;
 			  region = region+"-"+province;
 		  }
-	      String url = "www.subito.it/annunci-"+region+ "/vendita/";
+	      String url = "http://www.subito.it/annunci-"+region+ "/vendita/";
 	      if (category == null) {
 	    	  url = url +"usato/";
 	      } else {
@@ -25,26 +25,6 @@ public class URLBuilder {
 	      return url;
 	};
     
-	public static void main (String[] args) {
-		String query = "iphone";
-		String category = "videogiochi";
-		String region = "lazio";
-		String province = "roma";
-		String notProvince = "vicino";
-		URLBuilder builder = new URLBuilder();
-		System.out.println(builder.buildURL(query, region, category,province));
-		System.out.println(builder.buildURL(query, region, null, null));
-		System.out.println(builder.buildURL(query, region, null, notProvince));
-		System.out.println(builder.buildURL(query, region, category,null));
-		
-		
-		URLBuilder builder2 = new URLBuilder();
-		System.out.println(builder.buildURL(query, region, category,province));
-		System.out.println(builder.buildURL(query, region, null, null));
-		System.out.println(builder.buildURL(query, region, null, notProvince));
-		System.out.println(builder.buildURL(query, region, category,null));
-	    System.out.println("CIAO");
-	}
 	
 }
 
