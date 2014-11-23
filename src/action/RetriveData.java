@@ -58,6 +58,7 @@ public class RetriveData extends HttpServlet {
 	    response.setCharacterEncoding("UTF-8");
 	    System.out.println(jsonItem);
 	    request.getSession().setAttribute("elements", items);
+	    request.getSession().setAttribute("query", query);
         response.getWriter().write(jsonItem);
         
    

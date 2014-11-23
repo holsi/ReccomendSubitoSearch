@@ -39,36 +39,40 @@ public class Retriever {
 	private ArrayList<String> getPageLink2Query(String url) throws IOException {
 		Document doc = Jsoup.connect(url).get();
 		ArrayList<String> page2links = new ArrayList<String>();
+		ArrayList<String >page2links2result = new ArrayList<String>();
+		int number;
+		String lastPage;
+		String baseURL;
 		
 		Elements links = doc.select("[class=pagination] a[href]");
-		
-		for(Element link: links){
-			page2links.add(link.attr("abs:href"));
+		System.out.println(links.size());
+		if(links.size()==0) {
+			page2links2result.add(url);
 		}
-		if (page2links.size() == 0){
-			return page2links;
-		}
-		String lastPage = page2links.get(page2links.size()-1);
-		String baseURL = page2links.get(links.size()-1).substring(0, lastPage.length()-2);
-		lastPage = lastPage.substring(lastPage.length()-2);
-		int number;
-		try {
-		number = Integer.parseInt(lastPage);
-		} catch (Exception e){
-			lastPage = page2links.get(page2links.size()-1);
-			baseURL = page2links.get(links.size()-1).substring(0, lastPage.length()-2);
-			lastPage = lastPage.substring(lastPage.length()-1);
-			number = Integer.parseInt(lastPage);
-		}
-		
-		ArrayList<String >page2links2result = new ArrayList<String>();
-		page2links2result.add(url);
-		int i=2;
-		number++;
-		while(i!=number){
-			page2links2result.add(baseURL + i);
-			i++;
-			
+		else {
+			for(Element link: links){
+				page2links.add(link.attr("abs:href"));
+			}
+			if(page2links.size()>9){
+				lastPage = page2links.get(page2links.size()-1);
+				baseURL = page2links.get(links.size()-1).substring(0, lastPage.length()-2);
+				lastPage = lastPage.substring(lastPage.length()-2);
+				number = Integer.parseInt(lastPage);
+			}
+			else {
+				lastPage = page2links.get(page2links.size()-1);
+				baseURL = page2links.get(links.size()-1).substring(0, lastPage.length()-1);
+				lastPage = lastPage.substring(lastPage.length()-1);
+				number = Integer.parseInt(lastPage);
+			}
+			page2links2result.add(url);
+			int i=2;
+			number++;
+			while(i!=number){
+				page2links2result.add(baseURL + i);
+				i++;
+
+			}
 		}
 
 		return page2links2result;
