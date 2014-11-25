@@ -19,6 +19,7 @@ public class Controller {
 			ArrayList<Item> itemList = retriever.retrieve(url);
 			return itemList;
 		} catch (IOException e) {
+			 e.printStackTrace();
 		     return null;
 		}
 		

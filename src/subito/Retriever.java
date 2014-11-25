@@ -12,51 +12,31 @@ import org.jsoup.select.Elements;
 
 public class Retriever {
 
-	//action script dove viene inserita la query e convertita in htmleese
-
-
-
-	//metodo retrieveLinks data in in input una stringa che indica url da cui prendere i links e restituisce una serie di links in base alla tipologia
-
-	//metodo per filtrare solo i link utili
-
-	//metodo per navidare i singoli link e prendere il contenuto
-
-	//scelta del metodo di training
-
-	//metodo di classificazione e predizione
-
-	//retrieve  dati prodotti su amazon
-
-	//filtering del prodotto rilevante
-
-	//metodo di confronto - soglia sul prezzo del prodotto in base alla classificazione
-
-	//presentazione dati finali
-
-
-
 	private ArrayList<String> getPageLink2Query(String url) throws IOException {
-		Document doc = Jsoup.connect(url).get();
+		Document doc = Jsoup.connect(url).timeout(0).get();
 		ArrayList<String> page2links = new ArrayList<String>();
 		ArrayList<String >page2links2result = new ArrayList<String>();
-		int number;
+		int number = 0;
 		String lastPage;
 		String baseURL;
-		
+
 		Elements links = doc.select("[class=pagination] a[href]");
-		System.out.println(links.size());
 		if(links.size()==0) {
 			page2links2result.add(url);
+			System.out.println("URL:" + url);
 		}
 		else {
-			for(Element link: links){
+			for(Element link: links)
 				page2links.add(link.attr("abs:href"));
-			}
-			if(page2links.size()>9){
+
+			if(page2links.size()>=9){
+				System.out.println("URL:" + page2links.get(page2links.size()-1));
 				lastPage = page2links.get(page2links.size()-1);
 				baseURL = page2links.get(links.size()-1).substring(0, lastPage.length()-2);
-				lastPage = lastPage.substring(lastPage.length()-2);
+				lastPage = lastPage.substring((lastPage.length()-3), lastPage.length());
+				if(lastPage.contains("=")){
+					lastPage.substring(1, lastPage.length());
+				}
 				number = Integer.parseInt(lastPage);
 			}
 			else {
@@ -74,38 +54,38 @@ public class Retriever {
 
 			}
 		}
-
+		System.out.println("Pagine ritrovate:" + page2links2result.size());
 		return page2links2result;
-		
+
 	}
-	
-	
-	
-//	private ArrayList<String> getLinks(String url) throws IOException {
-//		Document doc = Jsoup.connect(url).get();
-//		ArrayList<String> list = new ArrayList<String>();
-//
-//		Elements links = doc.select("[class=adWhat] a[href]");
-//
-//
-//		Elements media = doc.select("[src]");
-//		Elements imports = doc.select("link[href]");
-//
-//
-//		for (Element link : links) {
-//
-//
-//			list.add(compose("%s", link.attr("abs:href"),
-//					trim(link.text(), 35)));
-//		}
-//		return list;
-//	}
-	
+
+
+
+	//	private ArrayList<String> getLinks(String url) throws IOException {
+	//		Document doc = Jsoup.connect(url).get();
+	//		ArrayList<String> list = new ArrayList<String>();
+	//
+	//		Elements links = doc.select("[class=adWhat] a[href]");
+	//
+	//
+	//		Elements media = doc.select("[src]");
+	//		Elements imports = doc.select("link[href]");
+	//
+	//
+	//		for (Element link : links) {
+	//
+	//
+	//			list.add(compose("%s", link.attr("abs:href"),
+	//					trim(link.text(), 35)));
+	//		}
+	//		return list;
+	//	}
+
 	private ArrayList<String> getLinks(ArrayList<String> url) throws IOException {
 		ArrayList<String> list = new ArrayList<String>();
-		
+
 		for(String s: url){
-			Document doc = Jsoup.connect(s).get();
+			Document doc = Jsoup.connect(s).timeout(0).get();
 
 
 			Elements links = doc.select("[class=adWhat] a[href]");
@@ -124,10 +104,10 @@ public class Retriever {
 		}
 		return list;
 	}
-	
-	
-	
-	
+
+
+
+
 
 	private  String compose(String msg, Object... args) {
 		return String.format(msg, args);
@@ -166,27 +146,19 @@ public class Retriever {
 	}
 
 
-	 public ArrayList<Item> retrieve(String url) throws IOException{
-	    	ArrayList<Item> items = new ArrayList<Item>();
-	    	ArrayList<String> links2query = this.getPageLink2Query(url);
-			ArrayList<String> links = this.getLinks(links2query);
-			System.out.println(links.size());
-			for (String link : links){
-				Item item = this.getItem(link);
-				items.add(item);
-			}
-	       return items;
-	 }	
-	
-		
-		
-		
-		//test getPageLink2Query
-//		Retrieve retriver = new Retrieve();
-//		ArrayList<String> links = retriver.getPageLink2Query("http://www.subito.it/annunci-lazio/vendita/usato/?q=iphone%206");
-//		System.out.println("(" + links.size() + ")");
-//		for (String link : links){
-//			System.out.println(link.toString());
-//		}
-	}
+	public ArrayList<Item> retrieve(String url) throws IOException{
+		ArrayList<Item> items = new ArrayList<Item>();
+		ArrayList<String> links2query = this.getPageLink2Query(url);
+		ArrayList<String> links = this.getLinks(links2query);
+		System.out.println(links.size());
+		for (String link : links){
+			Item item = this.getItem(link);
+			items.add(item);
+		}
+		return items;
+	}	
+
+
+
+}
 

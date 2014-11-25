@@ -72,7 +72,7 @@ $(".searchButton").on("click",function(e){
 	            success: function(result) {
 	                console.log("Success");
 	                console.log(result);
-	                objects = result;
+	                saveResults(result);
 	                $(".classifyButton").fadeIn(0);
 	                
 	            },
@@ -85,6 +85,17 @@ $(".searchButton").on("click",function(e){
 	    }
 });
 
+function saveResults(result){
+	console.log(result);
+	$(".results").fadeOut(0);
+	$(".resultsBox").prepend('<div class="results" style="height:800px;overflow-y:scroll"></div>');
+	for (i in result){
+		item = result[i];
+		console.log(item);
+		$(".results").append('<div class="item"><div class="imageBox"><img src="'+item.image+'"></img></div><div class="infoBox"><b>Title:</b>'+item.title+'<br><b>Description:</b>'+item.description+'<br><b>Price</b>'+item.price+' Eur<br><a href="'+item.link+'"type="button">Go to Item</button></div>');
+	}
+}
+
 $(".classifyButton").on("click",function(e){
 	 $.ajax({
         type: "GET",
@@ -94,7 +105,7 @@ $(".classifyButton").on("click",function(e){
         success: function(result) {
             console.log("Success");
             console.log(result);
-              
+            saveResult(result);
             
         },
         error: function(result) {
