@@ -53,6 +53,7 @@ public class RetriveData extends HttpServlet {
 	    Controller controller = new Controller();
 	    ArrayList<Item> items = (ArrayList<Item>) controller.retriveItems(query, region, province, category);
 		Gson json = new Gson();
+		
 		String jsonItem = json.toJson(items);
 	    response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");

@@ -24,31 +24,31 @@ var region2province = [["lazio",["roma","latina","frosinone","rieti","viterbo"]]
 
 
 $("#region").on("change",function(e){
-     changeProvince();
+	changeProvince();
 });
 
 function changeProvince(){
 	var index = index2region[($("#region")[0].selectedIndex)];
-    
-    for (var i=0; i<region2province.length; i++){
-   	 console.log(region2province[i][0]);
-   	 if (index === region2province[i][0]) {
-   		 var province = region2province[i][1];
-   		 break;
-   	 }
-   	 
-    }
-    $("#province").fadeOut(0);
-    
-    var provinceText = '<select name="province" id="province">';
-    for (var j=0; j<province.length; j++){
-   	 
-   	provinceText = provinceText + '<option name="'+province[j]+'">'+province[j]+'</option>';
-   	
-    }
-    provinceText = provinceText + '</selected>';
-    $(".provinceInput").prepend(provinceText);
-    j=0;
+
+	for (var i=0; i<region2province.length; i++){
+		console.log(region2province[i][0]);
+		if (index === region2province[i][0]) {
+			var province = region2province[i][1];
+			break;
+		}
+
+	}
+	$("#province").fadeOut(0);
+
+	var provinceText = '<select name="province" id="province">';
+	for (var j=0; j<province.length; j++){
+
+		provinceText = provinceText + '<option name="'+province[j]+'">'+province[j]+'</option>';
+
+	}
+	provinceText = provinceText + '</selected>';
+	$(".provinceInput").prepend(provinceText);
+	j=0;
 }
 
 changeProvince();
@@ -56,33 +56,33 @@ changeProvince();
 
 
 $(".searchButton").on("click",function(e){
-	  e.preventDefault();
-	    var $myForm = $('#searchForm'); //prendo la form
-	    if (!$myForm[0].checkValidity()) { //controllo validitÃ  del form
-	        
-	    }
-	    else {
-	        var formData = $("#searchForm").serialize(); //get all data from form
-	        $.ajax({
-	            type: "GET",
-	            url: "RetriveData",
-	            dataType: "json",
-	            cache: false,
-	            data: formData,
-	            success: function(result) {
-	                console.log("Success");
-	                console.log(result);
-	                saveResults(result);
-	                $(".classifyButton").fadeIn(0);
-	                
-	            },
-	            error: function(result) {
-	                console.log("error");
-	                console.log(result);
-	                
-	            }
-	        });
-	    }
+	e.preventDefault();
+	var $myForm = $('#searchForm'); //prendo la form
+	if (!$myForm[0].checkValidity()) { //controllo validitÃ  del form
+		console.log("VALIDITY ERROR");
+	}
+	else {
+		var formData = $("#searchForm").serialize(); //get all data from form
+		$.ajax({
+			type: "GET",
+			url: "RetriveData",
+			dataType: "json",
+			cache: false,
+			data: formData,
+			success: function(result) {
+				console.log("Success");
+				console.log(result);
+				saveResults(result);
+				$(".classifyButton").fadeIn(0);
+				$(".categoryCheckbox").fadeIn(0);
+			},
+			error: function(result) {
+				console.log("error");
+				console.log(result);
+
+			}
+		});
+	}
 });
 
 function saveResults(result){
@@ -97,23 +97,46 @@ function saveResults(result){
 }
 
 $(".classifyButton").on("click",function(e){
-	 $.ajax({
-        type: "GET",
-        url: "ClassifyData",
-        dataType: "json",
-        cache: false,
-        success: function(result) {
-            console.log("Success");
-            console.log(result);
-            saveResult(result);
-            
-        },
-        error: function(result) {
-            console.log("error");
-            console.log(result);
-            
-        }
-    });
+	e.preventDefault();
+	var $myForm = $('#searchForm'); //prendo la form
+	if (!$myForm[0].checkValidity()) { //controllo validitÃ  del form
+		console.log("VALIDITY ERROR");
+	}
+	else {
+		var categories = produceCategories();
+		console.log(categories);
+		$.ajax({
+			type: "GET",
+			url: "ClassifyData",
+			dataType: "json",
+			data:{categories: categories},
+			cache: false,
+			success: function(result) {
+				console.log("Success");
+				console.log(result);
+				saveResults(result);
+
+			},
+			error: function(result) {
+				console.log("error");
+				console.log(result);
+
+			}
+		});
+	}
 });
 
+function produceCategories(){
+	var category = null;
+	if ($("#garanzia")[0].value == "on"){
+		if (category == null){
+			category = "garanzia";
+		} else {
+			category = category + ",garanzia";
+		}
+	}
+	return category;
+}
+
 $(".classifyButton").fadeOut(0);
+$(".categoryCheckbox").fadeOut(0);

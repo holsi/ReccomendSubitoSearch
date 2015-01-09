@@ -9,9 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import controller.Controller;
 
-import amazon.AmazonRetriver;
+import amazon.RetrieveAmazon;
 
 import subito.Item;
 
@@ -43,9 +45,17 @@ public class ClassifyData extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ArrayList<Item> items = (ArrayList<Item>) request.getSession().getAttribute("elements"); 
 		String query = (String) request.getSession().getAttribute("query");
+		//check categorie
+		SubitoUtils utils = new SubitoUtils();
 		Controller controller = new Controller();
-		ArrayList<Item> bestItems = controller.findBest(query,items);
-		response.getWriter().write("{}");
+		ArrayList<Item> bestItems = controller.findBest(query,items,utils.checkCategories(request));
+		Gson json = new Gson();
+		String jsonItem = json.toJson(bestItems);
+		System.out.println(bestItems.size());
+	    response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+	    System.out.println(jsonItem);
+		response.getWriter().write(jsonItem);
 	}
 
 }

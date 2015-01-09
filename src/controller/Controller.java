@@ -7,7 +7,7 @@ import java.util.*;
 
 import classifier.ItemFinder;
 
-import amazon.AmazonRetriver;
+import amazon.RetrieveAmazon;
 
 public class Controller {
 
@@ -25,13 +25,23 @@ public class Controller {
 		
 	}
 
-	public ArrayList<Item> findBest(String query, ArrayList<Item> items) {
-		AmazonRetriver retriver = new AmazonRetriver();
-		Double averagePrice = retriver.searchItemValue(query);
-		ItemFinder finder = new ItemFinder();
-		ArrayList<Item> bestItems = finder.findBest(averagePrice,items);
+	public ArrayList<Item> findBest(String query, ArrayList<Item> items,ArrayList<String> categories) {
+		RetrieveAmazon retriver = new RetrieveAmazon();
+		URLBuilder builder = new URLBuilder();
+		String amazonUrl = builder.buildAmazonUrl(query);
+		Item itemA;
+		try {
+			itemA = retriver.getAmazonItem(amazonUrl);
+			ItemFinder finder = new ItemFinder();
+			ArrayList<Item> bestItems = finder.findBest(itemA.getPrice(),items,categories);
+			
+			return bestItems;
+		} catch (IOException e) {
 		
-		return bestItems;
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 }

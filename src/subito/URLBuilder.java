@@ -23,7 +23,11 @@ public class URLBuilder {
 	      }
 	      
 	      return url;
-	};
+	}
+
+	public String buildAmazonUrl(String query) {
+		return "http://www.amazon.it/s/ref=nb_sb_noss_1?__mk_it_IT=ÅMÅŽÕÑ&url=search-alias%3Daps&field-keywords=bose+acoustimass";
+	}
     
 	
 }

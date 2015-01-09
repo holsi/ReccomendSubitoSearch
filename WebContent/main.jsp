@@ -7,6 +7,7 @@
 <title>SubitoSearch</title>
 </head>
 <body>
+	
 	<div class="formBox">
 		<form  id="searchForm">
 			<div class="queryInput">
@@ -51,7 +52,9 @@
 			<div class="provinceInput">
 			
 			</div>
-			
+			<div class="categoryInput">
+				<input type="checkbox" class="categoryCheckbox" id="garanzia">				
+			</div>
 		</form>
 		<button class="searchButton">Cerca Su Subito</button>
 		<button class="classifyButton">Trova i migliori annunci</button>
